@@ -350,10 +350,11 @@ input[type="checkbox"] {
   border: 1px solid var(--lightgray);
   border-radius: 3px;
   background-color: var(--light);
-  margin-inline-end: 0.4rem;
-  margin-inline-start: -1.4rem;
+  margin-inline-end: 0.5rem;
+  margin-inline-start: 0;
   vertical-align: middle;
   position: relative;
+  flex-shrink: 0;
 
   // In-progress state [/] - filled box with accent color
   &.task-in-progress {
