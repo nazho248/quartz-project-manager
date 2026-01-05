@@ -670,6 +670,47 @@ export const ObsidianFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>>
                 }
               }
             })
+
+            // Handle Obsidian Tasks extended checkbox states: [/], [-], [>], [<], etc.
+            visit(tree, "element", (node) => {
+              if (node.tagName === "li") {
+                const firstChild = node.children?.[0]
+                if (firstChild?.type === "text") {
+                  const text = firstChild.value
+                  // Match patterns like [/], [-], [>], [<] at the start
+                  const match = text.match(/^\s*\[([\/\-\>])\]\s*/)
+                  if (match) {
+                    const taskState = match[1]
+                    const stateMap: Record<string, string> = {
+                      "/": "in-progress",
+                      "-": "cancelled",
+                      ">": "forwarded",
+                    }
+                    const dataState = stateMap[taskState] || taskState
+
+                    // Remove the [x] pattern from text
+                    firstChild.value = text.replace(/^\s*\[[\/\-\>]\]\s*/, "")
+
+                    // Create a custom checkbox span
+                    const checkboxSpan: Element = {
+                      type: "element",
+                      tagName: "span",
+                      properties: {
+                        class: `task-checkbox task-${dataState}`,
+                        "data-task": dataState,
+                      },
+                      children: [],
+                    }
+
+                    // Insert the checkbox span at the beginning
+                    node.children.unshift(checkboxSpan)
+                    // Add data attribute to li
+                    node.properties = node.properties || {}
+                    node.properties["data-task"] = dataState
+                  }
+                }
+              }
+            })
           }
         })
       }

@@ -342,6 +342,88 @@ input[type="checkbox"] {
   }
 }
 
+// Obsidian Tasks extended checkbox states
+.task-checkbox {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--lightgray);
+  border-radius: 3px;
+  background-color: var(--light);
+  margin-inline-end: 0.4rem;
+  margin-inline-start: -1.4rem;
+  vertical-align: middle;
+  position: relative;
+
+  // In-progress state [/] - filled box with accent color
+  &.task-in-progress {
+    border-color: var(--secondary);
+    background-color: var(--secondary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 8px;
+      height: 8px;
+      background-color: var(--light);
+      border-radius: 2px;
+    }
+  }
+
+  // Cancelled state [-] - strikethrough box
+  &.task-cancelled {
+    border-color: var(--gray);
+    background-color: var(--lightgray);
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 50%;
+      width: 10px;
+      height: 2px;
+      background-color: var(--gray);
+      transform: translateY(-50%);
+    }
+  }
+
+  // Forwarded state [>]
+  &.task-forwarded {
+    border-color: var(--tertiary);
+    background-color: var(--tertiary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 3px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 4px 0 4px 6px;
+      border-color: transparent transparent transparent var(--light);
+    }
+  }
+}
+
+// Style list items with task states
+li[data-task="cancelled"] {
+  color: var(--gray);
+  text-decoration: line-through;
+  text-decoration-color: var(--gray);
+}
+
+li[data-task="in-progress"] {
+  color: var(--dark);
+}
+
+li[data-task="forwarded"] {
+  color: var(--darkgray);
+  font-style: italic;
+}
+
 blockquote {
   margin: 1rem 0;
   border-left: 3px solid var(--secondary);
