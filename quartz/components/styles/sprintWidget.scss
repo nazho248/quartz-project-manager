@@ -1,0 +1,333 @@
+@use "../../styles/variables.scss" as *;
+
+.sprint-widget {
+  background: linear-gradient(135deg, var(--light) 0%, var(--lightgray) 100%);
+  border: 1px solid var(--gray);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.sprint-tabs {
+  display: flex;
+  background: var(--light);
+  border-bottom: 2px solid var(--lightgray);
+  padding: 0.25rem 0.5rem 0;
+  gap: 0.25rem;
+}
+
+.sprint-tab {
+  padding: 0.6rem 1.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--darkgray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  bottom: -2px;
+  border: 2px solid transparent;
+  border-bottom: none;
+
+  &:hover {
+    color: var(--secondary);
+    background: var(--lightgray);
+  }
+
+  &.active {
+    color: var(--secondary);
+    background: var(--lightgray);
+    border-color: var(--gray);
+    border-bottom: 2px solid var(--lightgray);
+  }
+}
+
+.sprint-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--gray);
+  color: var(--light);
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  min-width: 1.4rem;
+  text-align: center;
+
+  .sprint-tab.active & {
+    background: var(--secondary);
+    color: var(--light);
+  }
+}
+
+.sprint-content {
+  padding: 1.25rem;
+  max-height: 450px;
+  overflow-y: auto;
+  background: var(--lightgray);
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 3px;
+  }
+}
+
+.sprint-panel {
+  display: none;
+  animation: fadeIn 0.2s ease;
+
+  &.active {
+    display: block;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sprint-section {
+  background: var(--light);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.sprint-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--lightgray);
+}
+
+.sprint-section-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 1em;
+    background: var(--secondary);
+    border-radius: 2px;
+  }
+}
+
+.sprint-goto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  color: var(--gray);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: var(--lightgray);
+
+  &:hover {
+    color: var(--light);
+    background: var(--secondary);
+    transform: translateY(-1px);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.sprint-section-content {
+  font-size: 0.875rem;
+  line-height: 1.7;
+
+  // Hide h4 subheadings in widget (they're shown in full content)
+  h4 {
+    font-size: 0.8rem;
+    color: var(--darkgray);
+    margin: 1rem 0 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px dashed var(--lightgray);
+
+    // Hide anchor links in widget
+    a.internal {
+      display: none;
+    }
+  }
+
+  // Task list styles
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.5rem 0;
+
+    ul {
+      padding-left: 1.5rem;
+      margin: 0.25rem 0;
+      border-left: 2px solid var(--lightgray);
+    }
+  }
+
+  li {
+    position: relative;
+    padding: 0.3rem 0;
+
+    // First level items with more spacing
+    > ul {
+      margin-top: 0.25rem;
+    }
+  }
+
+  // Checkbox styles
+  input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    accent-color: var(--secondary);
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  // Completed task
+  li:has(> input[type="checkbox"]:checked) {
+    color: var(--gray);
+
+    > input[type="checkbox"] ~ * {
+      text-decoration: line-through;
+      text-decoration-color: var(--gray);
+    }
+  }
+
+  // Progress indicators (story points, dates, emojis)
+  // Make dates and metadata more subtle
+  li {
+    // Subtle styling for metadata (dates, emojis)
+    color: var(--dark);
+  }
+
+  // Links
+  a {
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Strong text (dates headers)
+  strong {
+    color: var(--dark);
+    font-weight: 600;
+  }
+
+  // Paragraphs
+  p {
+    margin: 0.5rem 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+// Progress bar for sprint (visual indicator)
+.sprint-section::after {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--secondary) 0%, var(--tertiary) 100%);
+  border-radius: 2px;
+  margin-top: 1rem;
+  opacity: 0.6;
+}
+
+// Highlight animation for target section
+@keyframes sprint-highlight-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--secondary-rgb, 38, 166, 154), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--secondary-rgb, 38, 166, 154), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--secondary-rgb, 38, 166, 154), 0);
+  }
+}
+
+.sprint-highlight {
+  animation: sprint-highlight-pulse 1.5s ease-out;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--secondary-rgb, 38, 166, 154), 0.1) 0%,
+    transparent 100%
+  );
+  border-radius: 8px;
+}
+
+// Responsive adjustments
+@media #{$mobile} {
+  .sprint-widget {
+    margin: 0 -0.5rem 1.5rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .sprint-tabs {
+    padding: 0.25rem 0.25rem 0;
+  }
+
+  .sprint-tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .sprint-content {
+    max-height: 350px;
+    padding: 1rem;
+  }
+
+  .sprint-section {
+    padding: 0.75rem 1rem;
+  }
+
+  .sprint-section-title {
+    font-size: 0.85rem;
+  }
+
+  .sprint-section-content {
+    font-size: 0.8rem;
+  }
+}
