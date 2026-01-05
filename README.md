@@ -17,6 +17,11 @@ Añade tags a tus headings de markdown:
 
 Descripción del proyecto...
 
+### Sprint 3: Diseño Base de Datos #prev
+
+- [x] Crear esquema inicial
+- [x] Configurar migraciones
+
 ### Sprint 4: Desarrollo API #actual
 
 **Inicio:** 2025-01-01 | **Fin:** 2025-01-15
@@ -25,10 +30,10 @@ Descripción del proyecto...
 - [/] Implementar autenticación
 - [ ] Documentar API
 
-### Sprint 3: Diseño Base de Datos #backlog
+### Sprint 5: Testing #next
 
-- [ ] Migrar datos legacy
-- [ ] Optimizar queries
+- [ ] Escribir tests unitarios
+- [ ] Configurar CI/CD
 
 ### Ideas Futuras #backlog
 
@@ -40,9 +45,13 @@ Descripción del proyecto...
 
 | Tag | Función |
 |-----|---------|
+| `#prev` | Marca la sección como sprint anterior (Tab "Last Sprint") |
 | `#actual` | Marca la sección como sprint actual (Tab "Actual") |
+| `#next` | Marca la sección como próximo sprint (Tab "Next Sprint") |
 | `#backlog` | Marca la sección como backlog (Tab "Backlog") |
 | `#ganttchart` | Fuerza mostrar el widget en esa página |
+
+**Orden de tabs:** Last Sprint → Actual → Next Sprint → Backlog
 
 ### Dónde Aparece el Widget
 
@@ -55,17 +64,17 @@ El widget se muestra automáticamente en:
 ### Ejemplo Visual
 
 ```
-┌─────────────────────────────────────────────────┐
-│  [Actual (2)]  [Backlog (3)]                    │
-├─────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────┐    │
-│  │ Sprint 4: Desarrollo API           [↗]  │    │
-│  │─────────────────────────────────────────│    │
-│  │ - [x] Crear endpoints REST              │    │
-│  │ - [/] Implementar autenticación         │    │
-│  │ - [ ] Documentar API                    │    │
-│  └─────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  [Last Sprint (1)]  [Actual (1)]  [Next Sprint (1)]  [Backlog (1)]  │
+├──────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────┐                 │
+│  │ Sprint 4: Desarrollo API           [↗]  │                 │
+│  │─────────────────────────────────────────│                 │
+│  │ - [x] Crear endpoints REST              │                 │
+│  │ - [/] Implementar autenticación         │                 │
+│  │ - [ ] Documentar API                    │                 │
+│  └─────────────────────────────────────────┘                 │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ### Características
@@ -103,7 +112,9 @@ El SprintWidget ya viene configurado. Si necesitas personalizarlo:
 **quartz.config.ts:**
 ```typescript
 Plugin.SprintWidget({
+  prevTag: "prev",          // Cambiar tag para "Last Sprint"
   actualTag: "actual",      // Cambiar tag para "Actual"
+  nextTag: "next",          // Cambiar tag para "Next Sprint"
   backlogTag: "backlog",    // Cambiar tag para "Backlog"
   ganttChartTag: "ganttchart",
   maxDepth: 4,              // Nivel máximo de headings (h1-h4)

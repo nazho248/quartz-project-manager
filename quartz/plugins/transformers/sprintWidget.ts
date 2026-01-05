@@ -5,14 +5,18 @@ import { toHtml } from "hast-util-to-html"
 import { QuartzTransformerPlugin } from "../types"
 
 export interface Options {
+  prevTag: string
   actualTag: string
+  nextTag: string
   backlogTag: string
   ganttChartTag: string
   maxDepth: 1 | 2 | 3 | 4 | 5 | 6
 }
 
 const defaultOptions: Options = {
+  prevTag: "prev",
   actualTag: "actual",
+  nextTag: "next",
   backlogTag: "backlog",
   ganttChartTag: "ganttchart",
   maxDepth: 4,
@@ -21,7 +25,7 @@ const defaultOptions: Options = {
 export interface SprintSection {
   id: string
   title: string
-  type: "actual" | "backlog"
+  type: "prev" | "actual" | "next" | "backlog"
   content: string
 }
 
@@ -97,9 +101,13 @@ export const SprintWidget: QuartzTransformerPlugin<Partial<Options>> = (userOpts
               }
 
               // Determine section type by looking for tag links
-              let sectionType: "actual" | "backlog" | null = null
-              if (findTagInHeading(node, opts.actualTag)) {
+              let sectionType: "prev" | "actual" | "next" | "backlog" | null = null
+              if (findTagInHeading(node, opts.prevTag)) {
+                sectionType = "prev"
+              } else if (findTagInHeading(node, opts.actualTag)) {
                 sectionType = "actual"
+              } else if (findTagInHeading(node, opts.nextTag)) {
+                sectionType = "next"
               } else if (findTagInHeading(node, opts.backlogTag)) {
                 sectionType = "backlog"
               }
@@ -130,7 +138,9 @@ export const SprintWidget: QuartzTransformerPlugin<Partial<Options>> = (userOpts
               if (contentHtml) {
                 // Clean the title (remove the tags from display)
                 const cleanTitle = cleanHeadingTitle(node, [
+                  opts.prevTag,
                   opts.actualTag,
+                  opts.nextTag,
                   opts.backlogTag,
                   opts.ganttChartTag,
                 ])
